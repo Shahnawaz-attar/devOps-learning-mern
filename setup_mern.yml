@@ -1,0 +1,38 @@
+---
+- name: Setup MERN Environment
+  hosts: mern_servers
+  become: true
+
+  tasks:
+    # Install Node.js
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
+      tags: nodejs
+
+    # Install MongoDB
+    - name: Install MongoDB
+      apt:
+        name: mongodb
+        state: present
+      tags: mongodb
+
+    # Install Docker
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+      tags: docker
+
+    # Clone the MERN Repository
+    - name: Clone MERN Repository
+      git:
+        repo: "https://github.com/Shahnawaz-attar/devOps-learning-mern.git"
+        dest: /home/ubuntu/devOps-learning-mern
+      tags: git
+
+    # Build and Run Docker Containers
+    - name: Start MERN Application
+      command: docker-compose -f /home/ubuntu/devOps-learning-mern/docker-compose.yml up -d
+      tags: docker-compose
